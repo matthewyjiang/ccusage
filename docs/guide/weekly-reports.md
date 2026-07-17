@@ -1,6 +1,6 @@
 # Weekly Usage
 
-Weekly usage aggregates usage by week, providing a mid-range view between daily and monthly usage. `ccusage weekly` covers all detected sources that support weekly aggregation; `ccusage claude weekly` and `ccusage opencode weekly` focus the same view on one source.
+Weekly usage aggregates usage by week, providing a mid-range view between daily and monthly usage. `ccusage weekly` covers all detected sources that support weekly aggregation; `ccusage claude weekly`, `ccusage opencode weekly`, and `ccusage rho weekly` focus the same view on one source.
 
 ## Basic Usage
 
