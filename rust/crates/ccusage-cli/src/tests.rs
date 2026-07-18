@@ -201,6 +201,7 @@ fn command_snapshot(command: Option<Command>) -> Value {
         Some(Command::Gemini(args)) => agent_command_snapshot("gemini", args),
         Some(Command::Kimi(args)) => agent_command_snapshot("kimi", args),
         Some(Command::Qwen(args)) => agent_command_snapshot("qwen", args),
+        Some(Command::Rho(args)) => agent_command_snapshot("rho", args),
         Some(Command::OpenClaw(args)) => agent_command_snapshot("openclaw", args),
     }
 }
@@ -1002,6 +1003,26 @@ fn parses_qwen_session_options() {
     let cli = parse(&["ccusage", "qwen", "session", "--json"]);
     let Some(Command::Qwen(args)) = cli.command else {
         panic!("expected qwen command");
+    };
+    assert_eq!(args.kind, AgentReportKind::Session);
+    assert!(args.shared.json);
+}
+
+#[test]
+fn parses_rho_weekly_options() {
+    let cli = parse(&["ccusage", "rho", "weekly", "--json"]);
+    let Some(Command::Rho(args)) = cli.command else {
+        panic!("expected rho command");
+    };
+    assert_eq!(args.kind, AgentReportKind::Weekly);
+    assert!(args.shared.json);
+}
+
+#[test]
+fn parses_rho_session_options() {
+    let cli = parse(&["ccusage", "rho", "session", "--json"]);
+    let Some(Command::Rho(args)) = cli.command else {
+        panic!("expected rho command");
     };
     assert_eq!(args.kind, AgentReportKind::Session);
     assert!(args.shared.json);

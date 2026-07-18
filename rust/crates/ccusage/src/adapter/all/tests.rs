@@ -485,6 +485,40 @@ fn renders_multi_section_json_keys_in_invoked_section_order_with_totals_last() {
 }
 
 #[test]
+fn all_report_loads_rho_usage_database() {
+    let fixture = fs_fixture!({});
+    let db = sqlite::open(fixture.path("usage.sqlite3")).unwrap();
+    db.execute(
+        "CREATE TABLE usage_events (
+            event_id TEXT PRIMARY KEY, schema_version INTEGER NOT NULL,
+            occurred_at_ms INTEGER NOT NULL, session_id TEXT, run_id TEXT,
+            workspace_path TEXT, provider TEXT NOT NULL, model TEXT NOT NULL,
+            input_tokens INTEGER, output_tokens INTEGER, cache_read_tokens INTEGER,
+            cache_write_tokens INTEGER, total_tokens INTEGER, cost_usd_micros INTEGER,
+            rho_version TEXT
+        )",
+    )
+    .unwrap();
+    db.execute(
+        "INSERT INTO usage_events VALUES (
+            'rho-event', 1, 4070995200000, 'rho-session', 'rho-run', '/workspace/rho',
+            'openai', 'gpt-5', 100, 20, 10, 0, 130, 10000, '0.9.0'
+        )",
+    )
+    .unwrap();
+    let _env = isolated_agent_env(&fixture, "RHO_HOME", fixture.root().as_os_str().into());
+    let shared = fixture_shared("20990102", "20990102");
+
+    let result = load_rows(AgentReportKind::Daily, &shared).unwrap();
+
+    assert_eq!(result.detected_agents, vec!["rho"]);
+    assert_eq!(result.rows.len(), 1);
+    assert_eq!(result.rows[0].input_tokens, 100);
+    assert_eq!(result.rows[0].cache_read_tokens, 10);
+    assert_eq!(result.rows[0].total_tokens, 130);
+}
+
+#[test]
 fn multi_section_claude_fixture_matches_standalone_sections_for_daily_and_session_invocations() {
     let fixture = fs_fixture!({
         "projects/project-a/session-a.jsonl": [
@@ -559,6 +593,7 @@ fn isolated_agent_env(
         "GEMINI_DATA_DIR",
         "KIMI_DATA_DIR",
         "QWEN_DATA_DIR",
+        "RHO_HOME",
     ]
     .into_iter()
     .map(|key| (key, None::<OsString>))

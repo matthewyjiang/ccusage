@@ -92,6 +92,10 @@
 				"description": "Show Qwen usage commands"
 			},
 			{
+				"name": "rho",
+				"description": "Show Rho usage commands"
+			},
+			{
 				"name": "openclaw",
 				"description": "Show OpenClaw usage commands"
 			}
@@ -690,6 +694,53 @@
 			"path": ["qwen", "session"],
 			"description": "Show Qwen usage grouped by session",
 			"usage": "ccusage qwen session <OPTIONS>",
+			"options": "agent_options"
+		},
+		{
+			"path": ["rho"],
+			"description": "Usage reports for Rho.",
+			"usage": "ccusage rho <COMMANDS>",
+			"commands": [
+				{
+					"name": "daily",
+					"description": "Show Rho usage grouped by date"
+				},
+				{
+					"name": "weekly",
+					"description": "Show Rho usage grouped by week"
+				},
+				{
+					"name": "monthly",
+					"description": "Show Rho usage grouped by month"
+				},
+				{
+					"name": "session",
+					"description": "Show Rho usage grouped by session"
+				}
+			]
+		},
+		{
+			"path": ["rho", "daily"],
+			"description": "Show Rho usage grouped by date",
+			"usage": "ccusage rho daily <OPTIONS>",
+			"options": "agent_options"
+		},
+		{
+			"path": ["rho", "weekly"],
+			"description": "Show Rho usage grouped by week",
+			"usage": "ccusage rho weekly <OPTIONS>",
+			"options": "agent_options"
+		},
+		{
+			"path": ["rho", "monthly"],
+			"description": "Show Rho usage grouped by month",
+			"usage": "ccusage rho monthly <OPTIONS>",
+			"options": "agent_options"
+		},
+		{
+			"path": ["rho", "session"],
+			"description": "Show Rho usage grouped by session",
+			"usage": "ccusage rho session <OPTIONS>",
 			"options": "agent_options"
 		},
 		{

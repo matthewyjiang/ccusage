@@ -332,6 +332,9 @@ fn parse_command(
             STANDARD_AGENT_REPORTS,
             Command::Qwen,
         ),
+        "rho" => {
+            parse_basic_agent_command(parser, shared, "rho", OPENCODE_AGENT_REPORTS, Command::Rho)
+        }
         "openclaw" => parse_openclaw_command(parser, shared, config),
         _ => Err(format!("Unknown command '{command}'")),
     }
@@ -762,6 +765,7 @@ fn is_command(arg: &str) -> bool {
             | "gemini"
             | "kimi"
             | "qwen"
+            | "rho"
     )
 }
 
@@ -919,6 +923,7 @@ fn is_agent_command(command: &str) -> bool {
             | "gemini"
             | "kimi"
             | "qwen"
+            | "rho"
             | "openclaw"
     )
 }
@@ -935,6 +940,7 @@ fn agent_report_supported(agent: &str, report: &str) -> bool {
         | "gemini" | "kimi" | "qwen" | "openclaw" => {
             matches!(report, "daily" | "monthly" | "session")
         }
+        "rho" => matches!(report, "daily" | "weekly" | "monthly" | "session"),
         _ => false,
     }
 }
@@ -955,6 +961,7 @@ fn agent_display_name(agent: &str) -> &'static str {
         "gemini" => "Gemini CLI",
         "kimi" => "Kimi",
         "qwen" => "Qwen",
+        "rho" => "Rho",
         "openclaw" => "OpenClaw",
         _ => unreachable!("agent is prevalidated"),
     }
